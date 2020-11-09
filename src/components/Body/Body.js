@@ -44,7 +44,6 @@ function Body({ spotify }) {
       <RowsContainer>
         <PlaylistRow title="Shortcuts" />
         <PlaylistRow title="Recently played" />
-        <PlaylistRow title="Your top shows" />
       </RowsContainer>
     </Container>
   );
