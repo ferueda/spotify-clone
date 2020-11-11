@@ -6,8 +6,10 @@ const Container = styled.div`
   align-items: center;
   height: 40px;
   cursor: pointer;
-  color: ${({ theme }) => theme.color.lightGray};
+  color: ${({ theme, selected }) => (selected ? '#fff' : theme.color.lightGray)};
   transition: 200ms color ease-in;
+  background-color: ${({ selected }) => (selected ? '#282828' : 'inherit')};
+  border-radius: 4px;
 
   &:hover {
     color: ${({ theme }) => theme.color.player.text};
@@ -24,15 +26,19 @@ const Text = styled.p`
   font-size: 14px;
 `;
 
-function SidebarOption({ title, Icon }) {
+function SidebarOption({ title, Icon, selected }) {
   return (
-    <Container>
+    <Container selected={selected}>
       {Icon ? (
         <IconContainer>
           <Icon />
         </IconContainer>
       ) : null}
-      {Icon ? <h4>{title}</h4> : <Text>{title}</Text>}
+      {Icon ? (
+        <h4>{title}</h4>
+      ) : (
+        <Text>{title.length > 30 ? title.slice(0, 27) + '...' : title}</Text>
+      )}
     </Container>
   );
 }
