@@ -6,7 +6,7 @@ import PlaylistRow from './PlaylistRow';
 const Container = styled.div`
   width: 100%;
   height: calc(100vh - 65px);
-  overflow-y: auto;
+  overflow-y: scroll;
   color: ${({ theme }) => theme.color.player.text};
   background: ${({ theme }) => theme.color.player.bodyBg};
   padding: 30px;
@@ -33,17 +33,13 @@ const RowsContainer = styled.section`
   grid-gap: 32px;
 `;
 
-const BodyInfo = styled.div``;
-const Description = styled.div``;
-
-function Body({ spotify }) {
+function Body({ spotify, playlists }) {
   return (
     <Container>
       <Header spotify={spotify} />
 
       <RowsContainer>
-        <PlaylistRow title="Shortcuts" />
-        <PlaylistRow title="Recently played" />
+        <PlaylistRow title="Recently played" playlists={playlists} />
       </RowsContainer>
     </Container>
   );
