@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ThemeProvider } from 'styled-components';
+import { BrowserRouter } from 'react-router-dom';
 
 import App from './App';
 
@@ -16,7 +17,9 @@ ReactDOM.render(
       <GlobalStyle />
 
       <StateProvider initialState={initialState} reducer={stateReducer}>
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </StateProvider>
     </ThemeProvider>
   </React.StrictMode>,
