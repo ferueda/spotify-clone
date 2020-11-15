@@ -6,8 +6,7 @@ import PlaySvg from '../../assets/play-btn.svg';
 const Container = styled.div`
   background-color: ${({ theme }) => theme.color.playlistCard.bg};
   padding: 16px;
-  width: 195px;
-  height: 272px;
+  width: 220px;
   border-radius: 4px;
 
   transition: 0.2s ease-in;
@@ -89,25 +88,31 @@ const Description = styled.p`
   word-wrap: break-word;
 `;
 
-function PlaylistCard() {
-  const caca = 'A daily selection of chill beats - perfect to help you relax & study 📚';
-
-  const titl = 'lofi hip hop music - beats to relax/study to';
+function PlaylistCard({ playlist }) {
+  const title = playlist?.name;
+  const description = playlist?.description;
+  const playlistBy = playlist?.owner.display_name;
 
   return (
     <Container>
       <AvatarContainer>
-        <Avatar
-          src="https://mosaic.scdn.co/640/ab67616d0000b2730b51f8d91f3a21e8426361aeab67616d0000b27328a90d00a2819504364880e4ab67616d0000b2734665488d7256f5272fc9815eab67616d0000b273a729c9c3dec04b99d889c66f"
-          alt=""
-        />
+        <Avatar src={playlist.images[0].url} alt={`${playlist.name} avatar`} />
+
         <PlayIconContainer id="playIcon">
           <PlayWhiteBg />
           <PlayIcon src={PlaySvg} alt="play song icon" />
         </PlayIconContainer>
       </AvatarContainer>
-      <Name>{titl.length > 20 ? titl.slice(0, 21) + '...' : titl}</Name>
-      <Description>{caca.length > 50 ? caca.slice(0, 50) + '...' : caca}</Description>
+
+      <Name>{title.length > 20 ? title.slice(0, 21) + '...' : title}</Name>
+
+      {description ? (
+        <Description>
+          {description.length > 50 ? description.slice(0, 50) + '...' : description}
+        </Description>
+      ) : (
+        <Description>By {playlistBy}</Description>
+      )}
     </Container>
   );
 }
