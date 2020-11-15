@@ -30,7 +30,7 @@ function stateReducer(state, action) {
     case actions.SET_PLAYLISTS:
       return {
         ...state,
-        playlists: action.playlists,
+        playlists: [...action.playlists.items],
       };
     default:
       return state;
