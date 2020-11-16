@@ -1,6 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
+
 import SearchIcon from '@material-ui/icons/Search';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { Avatar } from '@material-ui/core';
 import { useStateContext } from '../../context/StateProvider';
 
@@ -11,6 +15,11 @@ const Container = styled.div`
 `;
 
 const LeftHeader = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
+const SearchContainer = styled.div`
   background-color: #fff;
   color: #282828;
   border-radius: 500px;
@@ -37,6 +46,8 @@ const RightHeader = styled.div`
   border-radius: 500px;
   padding-right: 15px;
 
+  min-width: 200px;
+
   & > h4 {
     font-size: 14px;
     margin-left: 10px;
@@ -44,14 +55,49 @@ const RightHeader = styled.div`
   }
 `;
 
-function Header({ spotify }) {
+const ArrowIconContainer = styled.button`
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+
+  background-color: #000;
+  color: #fff;
+
+  border: none;
+  outline: none;
+
+  border-radius: 100%;
+  padding: 2px 8px;
+  margin-right: 20px;
+
+  cursor: pointer;
+`;
+
+function Header({ spotify, withSearch }) {
   const [{ user }] = useStateContext();
+  const history = useHistory();
+
+  console.log(history);
   return (
     <Container>
       <LeftHeader>
-        <SearchIcon fontSize="large" />
-        <input placeholder="Search for Artists, Songs, or Podcasts" />
+        <ArrowIconContainer onClick={history.goBack}>
+          <ArrowBackIosIcon fontSize="small" />
+        </ArrowIconContainer>
+
+        <ArrowIconContainer onClick={history.goForward}>
+          <ArrowForwardIosIcon fontSize="small" />
+        </ArrowIconContainer>
+
+        {withSearch ? (
+          <SearchContainer>
+            <SearchIcon fontSize="large" />
+            <input placeholder="Search for Artists, Songs, or Podcasts" autoFocus />
+          </SearchContainer>
+        ) : null}
       </LeftHeader>
+
       <RightHeader>
         <Avatar src={user?.images[0]?.url} alt={`${user?.display_name} avatar`} />
         <h4>{user?.display_name}</h4>
