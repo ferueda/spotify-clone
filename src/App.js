@@ -27,7 +27,7 @@ function App() {
 
   React.useEffect(() => {
     const hash = getTokenFromUrl();
-    history.push('/');
+    history.replace('/');
 
     const _token = hash.access_token;
 
@@ -60,7 +60,7 @@ function App() {
         </Route>
 
         <Route exact path={ROUTES.SEARCH}>
-          <Search />
+          <Search spotify={spotify} />
         </Route>
       </Switch>
 
