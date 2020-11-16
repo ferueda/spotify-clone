@@ -1,7 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import Header from './Header';
-import PlaylistRow from './PlaylistRow';
 
 const Container = styled.div`
   width: 100%;
@@ -28,21 +26,8 @@ const Container = styled.div`
   }
 `;
 
-const RowsContainer = styled.section`
-  display: grid;
-  grid-gap: 32px;
-`;
-
-function Body({ spotify, playlists }) {
-  return (
-    <Container>
-      <Header spotify={spotify} />
-
-      <RowsContainer>
-        <PlaylistRow title="Recently played" playlists={playlists} />
-      </RowsContainer>
-    </Container>
-  );
+function Body({ children }) {
+  return <Container>{children}</Container>;
 }
 
 export default Body;
