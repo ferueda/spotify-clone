@@ -6,7 +6,6 @@ import SearchIcon from '@material-ui/icons/Search';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { Avatar } from '@material-ui/core';
-import { useStateContext } from '../../context/StateProvider';
 
 const Container = styled.div`
   display: flex;
@@ -75,10 +74,9 @@ const ArrowIconContainer = styled.button`
 `;
 
 function Header({ spotify, withSearch }) {
-  const [{ user }] = useStateContext();
   const history = useHistory();
+  const { user } = spotify;
 
-  console.log(history);
   return (
     <Container>
       <LeftHeader>
