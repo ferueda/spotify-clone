@@ -1,11 +1,10 @@
 import React from 'react';
-import SpotifyWebApi from 'spotify-web-api-js';
 import styled from 'styled-components';
 import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
 
+import useTokenFromStorage from './hooks/useTokenFromStorage';
+
 import { getTokenFromUrl } from './services/spotify';
-import { useStateContext } from './context/StateProvider';
-import { actions } from './context/stateReducer';
 import * as ROUTES from './utils/routes';
 
 import Home from './pages/Home';
@@ -14,41 +13,37 @@ import Login from './pages/Login';
 
 import Sidebar from './components/Sidebar/Sidebar';
 import Footer from './components/Footer/Footer';
-
-const spotify = new SpotifyWebApi();
+import useSpotify from './hooks/useSpotify';
 
 const Main = styled.main`
   display: flex;
 `;
 
 function App() {
-  const [{ accessToken }, dispatch] = useStateContext();
+  const [token, setToken] = useTokenFromStorage();
   const history = useHistory();
+  const spotify = useSpotify(token, setToken);
+
+  //TODO: move the below useEffect into useToken and call useToken hook from useSpotify and return token from useSpotify
 
   React.useEffect(() => {
     const hash = getTokenFromUrl();
-    history.replace('/');
 
-    const _token = hash.access_token;
+    if (!token && hash) {
+      const _token = hash.access_token;
+      history.replace('/');
 
-    if (_token) {
-      dispatch({ type: actions.SET_ACCESS_TOKEN, accessToken: _token });
-
-      spotify.setAccessToken(_token);
-
-      spotify.getMe().then((user) => {
-        dispatch({ type: actions.SET_USER, user });
-      });
-
-      spotify.getUserPlaylists({ limit: 50 }).then((playlists) => {
-        dispatch({ type: actions.SET_PLAYLISTS, playlists });
-      });
+      if (_token) {
+        setToken(_token);
+      }
     }
-  }, [accessToken, dispatch, history]);
+  }, [token, setToken, history]);
 
-  if (accessToken === null || accessToken === undefined) {
+  if (!token) {
     return <Login />;
   }
+
+  console.log(spotify.user);
 
   return (
     <Main>
@@ -56,11 +51,15 @@ function App() {
 
       <Switch>
         <Route exact path={ROUTES.HOME}>
-          <Home spotify={spotify} />
+          <Home spotify={spotify} token={token} />
         </Route>
 
-        <Route exact path={ROUTES.SEARCH}>
+        <Route path={ROUTES.SEARCH}>
           <Search spotify={spotify} />
+        </Route>
+
+        <Route path="*">
+          <Redirect to={ROUTES.HOME} />
         </Route>
       </Switch>
 
