@@ -15,7 +15,7 @@ const RowsContainer = styled.section`
   grid-gap: 32px;
 `;
 
-function Home({ spotify }) {
+function Home({ spotify, token }) {
   const [{ playlists }] = useStateContext();
 
   return (
