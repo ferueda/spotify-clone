@@ -91,7 +91,7 @@ const Description = styled.p`
 function PlaylistCard({ playlist }) {
   const title = playlist?.name;
   const description = playlist?.description;
-  const playlistBy = playlist?.owner.display_name;
+  const playlistBy = playlist?.owner?.display_name;
 
   return (
     <Container>
@@ -110,9 +110,9 @@ function PlaylistCard({ playlist }) {
         <Description>
           {description.length > 50 ? description.slice(0, 50) + '...' : description}
         </Description>
-      ) : (
+      ) : playlistBy ? (
         <Description>By {playlistBy}</Description>
-      )}
+      ) : null}
     </Container>
   );
 }
