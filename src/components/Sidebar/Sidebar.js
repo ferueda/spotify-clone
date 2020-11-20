@@ -10,8 +10,9 @@ import * as ROUTES from '../../utils/routes';
 
 const Container = styled.nav`
   height: calc(100vh - 65px);
+  grid-area: sidebar;
   overflow-y: scroll;
-  width: 260px;
+  width: 232px;
   background-color: ${({ theme }) => theme.color.player.sidebarBg};
   color: ${({ theme }) => theme.color.player.text};
   padding: 14px 10px 0 10px;
