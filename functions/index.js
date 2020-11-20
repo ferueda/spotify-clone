@@ -1,33 +1,27 @@
 const functions = require('firebase-functions');
 const express = require('express');
-const axios = require('axios');
 const cors = require('cors');
-const { clientSecret, clientId } = require('./config');
+const helmet = require('helmet');
+const morgan = require('morgan');
+
+const spotify = require('./routes/spotify');
+const auth = require('./routes/auth');
 
 const app = express();
 
 app.use(cors({ origin: true }));
+app.use(helmet());
 
-app.get('/auth', async (req, res) => {
-  const code = req.query.code;
+if (app.get('env') === 'development') {
+  app.use(morgan('tiny'));
+}
 
-  if (!code) {
-    res.redirect('http://localhost:3000/');
-  }
+app.use('/auth', auth);
+app.use('/spotify', spotify);
 
-  const body = `grant_type=authorization_code&code=${code}&redirect_uri=${decodeURIComponent(
-    'http://localhost:5001/spotify-clone-88dae/us-central1/api/auth/',
-  )}&client_id=${clientId}&client_secret=${clientSecret}`;
-
-  try {
-    const { data } = await axios.post('https://accounts.spotify.com/api/token', body);
-
-    res.redirect(
-      `http://localhost:3000/#access_token=${data.access_token}&token_type=Bearer&expires_in=3600`,
-    );
-  } catch (error) {
-    console.error(error);
-  }
+app.use((_err, req, res, next) => {
+  console.log(_err);
+  res.status(500).send('Something went wrong.');
 });
 
 exports.api = functions.https.onRequest(app);
