@@ -1,31 +1,37 @@
 import React from 'react';
+import { getSpotify } from '../services/api';
 
-function useSpotify(token, setToken) {
+function useSpotify(token) {
   const [user, setUser] = React.useState(null);
+  const [playlists, setPlaylists] = React.useState([]);
+  const [status, setStatus] = React.useState('idle');
+  const [error, setError] = React.useState(null);
+
+  const isLoading = status === 'idle' || status === 'pending';
 
   React.useEffect(() => {
+    setStatus('pending');
+    setError(null);
+
     if (token) {
-      fetch('https://api.spotify.com/v1/me', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((res) => {
-          if (res.status === 200) {
-            return res.json();
-          } else {
-            throw new Error();
-          }
+      getSpotify(token)
+        .then((data) => {
+          setUser(data.user);
+          setPlaylists(data.playlists);
+          setStatus('resolved');
         })
-        .then((data) => setUser(data))
-        .catch(() => {
-          setToken(null);
+        .catch((error) => {
+          setError(error);
+          setStatus('rejected');
         });
     }
-  }, [token, setToken]);
+  }, [token]);
 
   return {
     user,
+    playlists,
+    error,
+    isLoading,
   };
 }
 
