@@ -1,11 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
-import useTokenFromStorage from './hooks/useTokenFromStorage';
-
-import { getTokenFromUrl } from './services/spotify';
 import * as ROUTES from './utils/routes';
+import useSpotify from './hooks/useSpotify';
 
 import Home from './pages/Home';
 import Search from './pages/Search';
@@ -13,33 +11,23 @@ import Login from './pages/Login';
 
 import Sidebar from './components/Sidebar/Sidebar';
 import Footer from './components/Footer/Footer';
-import useSpotify from './hooks/useSpotify';
 
 const Main = styled.main`
-  display: flex;
+  min-height: 100%;
+  width: 100%;
+  position: relative;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    'sidebar body'
+    'footer footer';
 `;
 
 function App() {
-  const [token, setToken] = useTokenFromStorage();
-  const history = useHistory();
-  const spotify = useSpotify(token);
+  const spotify = useSpotify();
 
-  //TODO: move the below useEffect into useToken and call useToken hook from useSpotify and return token from useSpotify
-
-  React.useEffect(() => {
-    const hash = getTokenFromUrl();
-
-    if (!token && hash) {
-      const _token = hash;
-      history.replace('/');
-
-      if (_token) {
-        setToken(_token);
-      }
-    }
-  }, [token, setToken, history]);
-
-  if (!token) {
+  if (!spotify.token) {
     return <Login />;
   }
 
