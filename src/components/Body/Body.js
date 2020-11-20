@@ -2,8 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
+  position: relative;
   width: 100%;
   height: calc(100vh - 65px);
+  grid-area: body;
   overflow-y: scroll;
   color: ${({ theme }) => theme.color.player.text};
   background: ${({ theme }) => theme.color.player.bodyBg};
