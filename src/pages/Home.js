@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Body from '../components/Body/Body';
 import Header from '../components/Body/Header';
 import PlaylistRow from '../components/Body/PlaylistRow';
+import Loading from '../components/Loading';
 
 const Container = styled.div`
   width: 100%;
@@ -11,19 +12,33 @@ const Container = styled.div`
 
 const RowsContainer = styled.section`
   display: grid;
-  grid-gap: 32px;
+  grid-template-columns: 1fr;
+  grid-row-gap: 32px;
 `;
 
 function Home({ spotify }) {
-  const { playlists } = spotify;
+  const { isLoading, playlists, featured, topArtistsLong, topArtistsShort, newReleases } = spotify;
+
   return (
     <Container>
       <Body>
         <Header spotify={spotify} />
 
-        <RowsContainer>
-          <PlaylistRow title="Recently played" playlists={playlists} />
-        </RowsContainer>
+        {isLoading === true ? (
+          <Loading />
+        ) : (
+          <RowsContainer>
+            <PlaylistRow title="Recently played" playlists={playlists} />
+
+            <PlaylistRow title="Your favorite artists" playlists={topArtistsLong} />
+
+            <PlaylistRow title="Featured" playlists={featured} />
+
+            <PlaylistRow title="Recently played artists" playlists={topArtistsShort} />
+
+            <PlaylistRow title="New releases" playlists={newReleases} />
+          </RowsContainer>
+        )}
       </Body>
     </Container>
   );
