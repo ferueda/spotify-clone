@@ -20,8 +20,13 @@ app.use('/auth', auth);
 app.use('/spotify', spotify);
 
 app.use((_err, req, res, next) => {
-  console.log(_err);
-  res.status(500).send('Something went wrong.');
+  if (_err.response.data.error === 'invalid_grant') {
+    return res
+      .status(401)
+      .json({ error: _err.response.data.error, description: _err.response.data.error_description });
+  }
+
+  return res.status(500).send('Something went wrong.');
 });
 
 exports.api = functions.https.onRequest(app);
