@@ -12,6 +12,7 @@ import { Grid, Slider } from '@material-ui/core';
 
 const Container = styled.div`
   position: fixed;
+  grid-area: footer;
   display: flex;
   justify-content: space-between;
   bottom: 0;
