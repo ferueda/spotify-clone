@@ -6,7 +6,6 @@ import SearchIcon from '@material-ui/icons/Search';
 import LibraryMusicIcon from '@material-ui/icons/LibraryMusic';
 import { Link, useLocation } from 'react-router-dom';
 
-import { useStateContext } from '../../context/StateProvider';
 import * as ROUTES from '../../utils/routes';
 
 const Container = styled.nav`
@@ -64,10 +63,10 @@ const Playlist = styled.strong`
   font-size: 12px;
 `;
 
-function Sidebar() {
+function Sidebar({ spotify }) {
   const { pathname } = useLocation();
   const [selected, setSelected] = React.useState(pathname);
-  const [{ playlists }] = useStateContext();
+  const { playlists } = spotify;
 
   React.useEffect(() => {
     setSelected(pathname);
