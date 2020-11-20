@@ -8,6 +8,7 @@ const Container = styled.section``;
 
 const CardContainer = styled.div`
   display: grid;
+  grid-auto-flow: column;
   grid-gap: 24px;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 `;
@@ -29,13 +30,25 @@ const Link = styled.a`
 `;
 
 function PlaylistRow({ title, playlists }) {
+  const [screenWidth, setScreenWidth] = React.useState(() => window.innerWidth);
+
+  React.useEffect(() => {
+    const handleResize = throttle(100, () => setScreenWidth(window.innerWidth));
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const playlistsToShow = playlists.slice(0, Math.floor((screenWidth - 232) / (220 + 27)));
+
   return (
     <Container>
       <Title>
         <Link href="">{title}</Link>
       </Title>
       <CardContainer>
-        {playlists.map((playlist) => (
+        {playlistsToShow.map((playlist) => (
           <PlaylistCard key={playlist.id} playlist={playlist} />
         ))}
       </CardContainer>
