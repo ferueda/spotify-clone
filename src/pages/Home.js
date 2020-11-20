@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useStateContext } from '../context/StateProvider';
 
 import Body from '../components/Body/Body';
 import Header from '../components/Body/Header';
@@ -15,9 +14,8 @@ const RowsContainer = styled.section`
   grid-gap: 32px;
 `;
 
-function Home({ spotify, token }) {
-  const [{ playlists }] = useStateContext();
-
+function Home({ spotify }) {
+  const { playlists } = spotify;
   return (
     <Container>
       <Body>
