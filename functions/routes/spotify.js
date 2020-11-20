@@ -1,8 +1,16 @@
 const express = require('express');
 const axios = require('axios');
 const querystring = require('querystring');
-
-const { basic, TOKEN_ENDPOINT, USER_ENDPOINT, PLAYLISTS_ENDPOINT } = require('../config');
+const {
+  basic,
+  TOKEN_ENDPOINT,
+  USER_ENDPOINT,
+  PLAYLISTS_ENDPOINT,
+  TOP_ARTISTS_LONG_ENDPOINT,
+  TOP_ARTISTS_SHORT_ENDPOINT,
+  FEATURED_ENDPOINT,
+  NEW_RELEASES_ENDPOINT,
+} = require('../config');
 
 const router = express.Router();
 
@@ -35,13 +43,37 @@ router.get('/', async (req, res, next) => {
 
     const userPromise = axios.get(USER_ENDPOINT, { headers });
     const playlistsPromise = axios.get(PLAYLISTS_ENDPOINT, { headers });
+    const featuredPromise = axios.get(FEATURED_ENDPOINT, { headers });
+    const topArtistsLongPromise = axios.get(TOP_ARTISTS_LONG_ENDPOINT, { headers });
+    const topArtistsShortPromise = axios.get(TOP_ARTISTS_SHORT_ENDPOINT, { headers });
+    const newReleasesPromise = axios.get(NEW_RELEASES_ENDPOINT, { headers });
 
-    const [{ data: user }, { data: playlistsData }] = await Promise.all([
+    const [
+      { data: user },
+      { data: playlistsData },
+      { data: featuredData },
+      { data: topArtistsLongData },
+      { data: topArtistsShortData },
+      { data: newReleasesData },
+    ] = await Promise.all([
       userPromise,
       playlistsPromise,
+      featuredPromise,
+      topArtistsLongPromise,
+      topArtistsShortPromise,
+      newReleasesPromise,
     ]);
 
-    return res.status(200).json({ user: { ...user }, playlists: playlistsData.items });
+    console.log(newReleasesData);
+
+    return res.status(200).json({
+      user,
+      playlists: playlistsData.items,
+      featured: featuredData.playlists.items,
+      topArtistsLong: topArtistsLongData.items,
+      topArtistsShort: topArtistsShortData.items,
+      newReleases: newReleasesData.albums.items,
+    });
   } catch (error) {
     return next(error);
   }
