@@ -22,7 +22,7 @@ const Main = styled.main`
 function App() {
   const [token, setToken] = useTokenFromStorage();
   const history = useHistory();
-  const spotify = useSpotify(token, setToken);
+  const spotify = useSpotify(token);
 
   //TODO: move the below useEffect into useToken and call useToken hook from useSpotify and return token from useSpotify
 
@@ -30,7 +30,7 @@ function App() {
     const hash = getTokenFromUrl();
 
     if (!token && hash) {
-      const _token = hash.access_token;
+      const _token = hash;
       history.replace('/');
 
       if (_token) {
@@ -43,15 +43,13 @@ function App() {
     return <Login />;
   }
 
-  console.log(spotify.user);
-
   return (
     <Main>
-      <Sidebar />
+      <Sidebar spotify={spotify} />
 
       <Switch>
         <Route exact path={ROUTES.HOME}>
-          <Home spotify={spotify} token={token} />
+          <Home spotify={spotify} />
         </Route>
 
         <Route path={ROUTES.SEARCH}>
