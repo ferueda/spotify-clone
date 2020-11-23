@@ -53,6 +53,7 @@ function useSpotify() {
     error,
     isLoading,
     token,
+    setToken,
   };
 }
 
