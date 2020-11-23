@@ -1,12 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import SidebarOption from './SidebarOption';
+import { Link, useLocation } from 'react-router-dom';
+
 import HomeIcon from '@material-ui/icons/Home';
 import SearchIcon from '@material-ui/icons/Search';
 import LibraryMusicIcon from '@material-ui/icons/LibraryMusic';
-import { Link, useLocation } from 'react-router-dom';
 
 import * as ROUTES from '../../utils/routes';
+
+import SidebarOption from './SidebarOption';
+import SidebarPlaylist from './SidebarPlaylist';
 
 const Container = styled.nav`
   height: calc(100vh - 65px);
@@ -62,6 +65,9 @@ const Playlist = styled.strong`
   margin-left: 10px;
   padding: 5px;
   font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 1.4px;
 `;
 
 function Sidebar({ spotify }) {
@@ -113,7 +119,7 @@ function Sidebar({ spotify }) {
         //CEATE NEW COMPONENT FOR PLAYLISTS ITEMS
       }
       {playlists?.map((playlist) => (
-        <SidebarOption key={playlist.id} title={playlist.name} />
+        <SidebarPlaylist key={playlist.id} title={playlist.name} />
       ))}
     </Container>
   );
