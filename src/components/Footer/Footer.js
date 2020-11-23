@@ -6,9 +6,7 @@ import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import ShuffleIcon from '@material-ui/icons/Shuffle';
 import RepeatIcon from '@material-ui/icons/Repeat';
-import VolumeDownIcon from '@material-ui/icons/VolumeDown';
-import PlaylistPlayIcon from '@material-ui/icons/PlaylistPlay';
-import { Grid, Slider } from '@material-ui/core';
+import VolumeControls from './VolumeConrols';
 
 const Container = styled.div`
   position: fixed;
@@ -16,7 +14,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   bottom: 0;
-  height: 65px;
+  height: ${({ theme }) => theme.footer.height};
   width: 100%;
   min-width: 768px;
   background-color: ${({ theme }) => theme.color.player.footerBg};
@@ -41,14 +39,6 @@ const PlayerControls = styled.div`
   width: 300px;
 `;
 
-const VolumeControls = styled.div`
-  display: flex;
-  color: ${({ theme }) => theme.color.lightGray};
-  align-items: center;
-  justify-content: space-between;
-  min-width: 220px;
-`;
-
 const IconContainer = styled.div`
   color: ${({ active, theme }) => (active ? theme.color.darkGreen : theme.color.lightGray)};
   &:hover {
@@ -61,10 +51,6 @@ const PlayIconContainer = styled(IconContainer)`
   &:hover {
     transform: scale(1.1);
   }
-`;
-
-const SliderContainer = styled.div`
-  max-width: 95px;
 `;
 
 const AlbumImg = styled.img`
@@ -112,25 +98,7 @@ function Footer() {
         </IconContainer>
       </PlayerControls>
 
-      <VolumeControls>
-        <Grid container spacing={2}>
-          <Grid item>
-            <IconContainer>
-              <PlaylistPlayIcon />
-            </IconContainer>
-          </Grid>
-          <Grid item>
-            <IconContainer>
-              <VolumeDownIcon />
-            </IconContainer>
-          </Grid>
-          <Grid item xs>
-            <SliderContainer>
-              <Slider aria-labelledby="continuous-slider" />
-            </SliderContainer>
-          </Grid>
-        </Grid>
-      </VolumeControls>
+      <VolumeControls />
     </Container>
   );
 }
