@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Body from '../components/Body/Body';
-import Header from '../components/Body/Header';
+import Header from '../components/Header/Header';
 import PlaylistRow from '../components/Body/PlaylistRow';
 import Loading from '../components/Loading';
 

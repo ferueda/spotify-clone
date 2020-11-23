@@ -64,8 +64,6 @@ router.get('/', async (req, res, next) => {
       newReleasesPromise,
     ]);
 
-    console.log(newReleasesData);
-
     return res.status(200).json({
       user,
       playlists: playlistsData.items,
