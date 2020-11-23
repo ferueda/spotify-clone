@@ -3,6 +3,7 @@ const theme = {
     mainGreen: '#1db954',
     darkGreen: '#15883e',
     lightGray: '#b3b3b3',
+    darkerGray: '#282828',
     player: {
       text: '#fff',
       sidebarBg: '#040404',
@@ -14,6 +15,9 @@ const theme = {
       bg: '#181818',
       bgHover: '#282828',
     },
+  },
+  footer: {
+    height: '90px',
   },
 };
 
