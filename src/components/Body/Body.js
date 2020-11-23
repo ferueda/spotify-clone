@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Container = styled.div`
   position: relative;
   width: 100%;
-  height: calc(100vh - 65px);
+  height: ${({ theme }) => `calc(100vh - ${theme.footer.height})`};
   grid-area: body;
   overflow-y: scroll;
   color: ${({ theme }) => theme.color.player.text};
