@@ -38,13 +38,17 @@ function VolumeControls() {
 
   const handleVolumeIconClick = () => {
     if (volumeLevel !== 0) {
-      lastVolumeLevel.current = volumeLevel;
-      setVolumeLevel(0);
-      return;
+      return setVolumeLevel(0);
     }
 
     setVolumeLevel(lastVolumeLevel.current);
   };
+
+  React.useEffect(() => {
+    if (volumeLevel !== 0) {
+      lastVolumeLevel.current = volumeLevel;
+    }
+  }, [volumeLevel]);
 
   return (
     <Container>
