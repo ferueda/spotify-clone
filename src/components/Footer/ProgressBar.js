@@ -40,6 +40,9 @@ const VolumePointer = styled.div`
 
 function ProgressBar({ volumeIsActive, setVolumeIsActive, volumeLevel, setVolumeLevel }) {
   const fillerRef = React.useRef(null);
+  const ghostImageRef = React.useRef(new Image());
+  ghostImageRef.current.src =
+    'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
 
   const handleWidth = (e) => {
     const pos = e.currentTarget.getBoundingClientRect();
@@ -47,6 +50,28 @@ function ProgressBar({ volumeIsActive, setVolumeIsActive, volumeLevel, setVolume
 
     setVolumeLevel(x);
   };
+
+  const handleDrag = (e) => {
+    e.preventDefault();
+
+    const pos = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - pos.left;
+
+    setVolumeLevel((prev) => {
+      const newVolume = prev + x;
+
+      if (newVolume < 0) {
+        return prev;
+      }
+
+      if (newVolume > 93) {
+        return 93;
+      }
+
+      return prev + x;
+    });
+  };
+
   return (
     <Container
       onClick={handleWidth}
@@ -55,7 +80,15 @@ function ProgressBar({ volumeIsActive, setVolumeIsActive, volumeLevel, setVolume
     >
       <Bar>
         <Filler isActive={volumeIsActive} ref={fillerRef} volumeLevel={volumeLevel} />
-        <VolumePointer volumeIsActive={volumeIsActive} volumeLevel={volumeLevel} />
+        <VolumePointer
+          volumeIsActive={volumeIsActive}
+          volumeLevel={volumeLevel}
+          draggable
+          onDragStart={(e) => {
+            e.dataTransfer.setDragImage(ghostImageRef.current, 0, 0);
+          }}
+          onDrag={handleDrag}
+        />
       </Bar>
     </Container>
   );
