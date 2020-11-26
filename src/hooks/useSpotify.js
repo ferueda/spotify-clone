@@ -10,6 +10,7 @@ function useSpotify() {
   const [topArtistsLong, setTopArtistsLong] = React.useState([]);
   const [topArtistsShort, setTopArtistsShort] = React.useState([]);
   const [newReleases, setNewReleases] = React.useState([]);
+  const [recentlyPlayed, setRecentlyPlayed] = React.useState([]);
   const [status, setStatus] = React.useState('idle');
   const [error, setError] = React.useState(null);
 
@@ -30,6 +31,7 @@ function useSpotify() {
           setTopArtistsLong(data.topArtistsLong);
           setTopArtistsShort(data.topArtistsShort);
           setNewReleases(data.newReleases);
+          setRecentlyPlayed(data.recentlyPlayed);
           setStatus('resolved');
         })
         .catch((error) => {
@@ -50,6 +52,7 @@ function useSpotify() {
     topArtistsLong,
     topArtistsShort,
     newReleases,
+    recentlyPlayed,
     error,
     isLoading,
     token,
