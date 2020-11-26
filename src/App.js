@@ -49,7 +49,7 @@ function App() {
         </Route>
       </Switch>
 
-      <Footer />
+      <Footer spotify={spotify} />
     </Main>
   );
 }
