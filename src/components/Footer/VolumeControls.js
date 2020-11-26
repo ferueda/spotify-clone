@@ -14,7 +14,8 @@ const Container = styled.div`
   color: ${({ theme }) => theme.color.lightGray};
   align-items: center;
   justify-content: space-between;
-  min-width: 220px;
+  min-width: 300px;
+  padding-left: 120px;
 `;
 
 const IconContainer = styled.div`
@@ -28,6 +29,7 @@ const ProgressBarContainer = styled.div`
   display: flex;
   align-items: center;
   height: 100%;
+  width: 100px;
 `;
 
 function VolumeControls() {
@@ -78,10 +80,11 @@ function VolumeControls() {
         <Grid item xs>
           <ProgressBarContainer>
             <ProgressBar
-              volumeIsActive={volumeIsActive}
-              setVolumeIsActive={setVolumeIsActive}
-              volumeLevel={volumeLevel}
-              setVolumeLevel={setVolumeLevel}
+              isActive={volumeIsActive}
+              setIsActive={setVolumeIsActive}
+              level={volumeLevel}
+              setLevel={setVolumeLevel}
+              width={93}
             />
           </ProgressBarContainer>
         </Grid>
