@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { throttle } from 'throttle-debounce';
 
 const Container = styled.div`
-  width: 93px;
+  width: ${({ width }) => `${width}px`};
   height: 12px;
   display: flex;
   align-items: center;
@@ -20,7 +21,7 @@ const Filler = styled.div`
   height: 4px;
   border-radius: 2px;
   background-color: ${({ theme, isActive }) => (isActive ? theme.color.mainGreen : '#b3b3b3')};
-  width: ${({ volumeLevel }) => `${volumeLevel}px`};
+  width: ${({ level }) => `${level}px`};
 `;
 
 const VolumePointer = styled.div`
@@ -30,15 +31,15 @@ const VolumePointer = styled.div`
   height: 12px;
   z-index: 100;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  opacity: ${({ volumeIsActive }) => (volumeIsActive ? 1 : 0)};
+  opacity: ${({ isActive }) => (isActive ? 1 : 0)};
 
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  margin-left: ${({ volumeLevel }) => `${volumeLevel - 6}px`};
+  margin-left: ${({ level }) => `${level - 6}px`};
 `;
 
-function ProgressBar({ volumeIsActive, setVolumeIsActive, volumeLevel, setVolumeLevel }) {
+function ProgressBar({ isActive, setIsActive, level, setLevel, width }) {
   const fillerRef = React.useRef(null);
   const ghostImageRef = React.useRef(new Image());
   ghostImageRef.current.src =
@@ -48,41 +49,48 @@ function ProgressBar({ volumeIsActive, setVolumeIsActive, volumeLevel, setVolume
     const pos = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - pos.left;
 
-    setVolumeLevel(x);
+    setLevel(x);
   };
 
-  const handleDrag = (e) => {
-    e.preventDefault();
+  const handleDrag = React.useCallback(
+    throttle(
+      1,
+      (e) => {
+        e.preventDefault();
 
-    const pos = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - pos.left;
+        const pos = e.currentTarget.getBoundingClientRect();
+        const x = e.clientX - pos.left;
 
-    setVolumeLevel((prev) => {
-      const newVolume = prev + x;
+        setLevel((prev) => {
+          const newVolume = prev + x;
 
-      if (newVolume < 0) {
-        return prev;
-      }
+          if (newVolume < 0) {
+            return prev;
+          }
 
-      if (newVolume > 93) {
-        return 93;
-      }
+          if (newVolume > width) {
+            return width;
+          }
 
-      return prev + x;
-    });
-  };
+          return prev + x;
+        });
+      },
+      [setLevel, width],
+    ),
+  );
 
   return (
     <Container
       onClick={handleWidth}
-      onMouseEnter={() => setVolumeIsActive(true)}
-      onMouseLeave={() => setVolumeIsActive(false)}
+      onMouseEnter={() => setIsActive(true)}
+      onMouseLeave={() => setIsActive(false)}
+      width={width}
     >
       <Bar>
-        <Filler isActive={volumeIsActive} ref={fillerRef} volumeLevel={volumeLevel} />
+        <Filler isActive={isActive} ref={fillerRef} level={level} />
         <VolumePointer
-          volumeIsActive={volumeIsActive}
-          volumeLevel={volumeLevel}
+          isActive={isActive}
+          level={level}
           draggable
           onDragStart={(e) => {
             e.dataTransfer.setDragImage(ghostImageRef.current, 0, 0);
