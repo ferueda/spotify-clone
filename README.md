@@ -8,7 +8,7 @@ Live Demo at https://eager-dijkstra-a6d305.netlify.app
 
 ### Home
 
-![home flow gif](https://i.imgur.com/jzcIz0C.gif)
+![home flow gif](https://i.imgur.com/063ZZZd.gif)
 
 ### Sidebar
 
